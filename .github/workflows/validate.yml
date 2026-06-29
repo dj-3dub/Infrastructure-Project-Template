@@ -1,0 +1,47 @@
+name: Validate Infrastructure Project
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install validation tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y make ansible curl openssl
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Make scripts executable
+        run: chmod +x scripts/*.sh
+
+      - name: Validate Docker Compose
+        run: docker compose config
+
+      - name: Validate Ansible syntax
+        run: |
+          cd ansible
+          ansible-playbook playbooks/deploy.yml --syntax-check
+
+      - name: Terraform init
+        run: terraform -chdir=terraform/cloudflare init -backend=false
+
+      - name: Terraform format check
+        run: terraform -chdir=terraform/cloudflare fmt -check -recursive
+
+      - name: Terraform validate
+        run: terraform -chdir=terraform/cloudflare validate
+
+      - name: Run project validation
+        run: make validate

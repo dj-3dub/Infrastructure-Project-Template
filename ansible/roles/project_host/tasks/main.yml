@@ -1,0 +1,4 @@
+---
+- name: Validate project host role
+  ansible.builtin.debug:
+    msg: "Project host role loaded successfully."

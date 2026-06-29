@@ -1,0 +1,24 @@
+# Environment / secrets
+.env
+*.tfvars
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Backups
+backups/
+*.bak
+*.backup
+*.dump
+*.sql
+*.tar.gz
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Runtime
+*.log
+tmp/

@@ -1,0 +1,8 @@
+---
+- name: Deploy infrastructure project
+  hosts: project_hosts
+  become: false
+  gather_facts: true
+
+  roles:
+    - ../roles/project_host
